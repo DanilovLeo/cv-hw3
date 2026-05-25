@@ -1,130 +1,103 @@
-# DETR Fine-tuning on a 10-class COCO Subset
+# Файнтюнинг DETR на подмножестве COCO (10 классов)
 
-Fine-tuning of `facebook/detr-resnet-50` on a 10-class subset of COCO val2017, with TensorBoard logging, a profiler trace, COCO-style evaluation and an error analysis.
+Файнтюнинг `facebook/detr-resnet-50` на 10-классовом подмножестве COCO val2017 с логированием в TensorBoard, трейсом профайлера, COCO-оценкой и анализом ошибок.
 
-## Layout
+## Структура репозитория
 
 ```
-proj/
-├── data/
-│   ├── train/                 240 images
-│   ├── val/                   60 images
-│   └── annotations/
-│       ├── train.json         COCO-format
-│       └── val.json
+cv-hw3/
 ├── src/
 │   ├── train.py
 │   ├── eval.py
 │   └── error_analysis.py
 ├── logs/
-│   ├── tb/                    TensorBoard events
-│   ├── profiler_trace.json    chrome://tracing format
+│   ├── tb/                    # события TensorBoard
+│   ├── profiler_trace.json    # открыть через chrome://tracing
 │   ├── metrics.json
 │   └── val_predictions.json
-├── checkpoints/best_model.pth
-└── viz/
-    ├── side_by_side/          GT vs Pred
-    ├── classification_errors/
-    └── localization_errors/
+├── viz/
+│   ├── side_by_side/          # GT vs Pred
+│   ├── classification_errors/
+│   └── localization_errors/
+├── prepare_data.py
+└── hw2_5/                     # ДЗ 2.5
 ```
 
-## Dataset
+> `data/` и `checkpoints/` исключены из репозитория. Для воспроизведения запустите `prepare_data.py`.
 
-10 classes from COCO 2017: `person, bicycle, car, motorcycle, bus, truck, traffic light, stop sign, cat, dog`.
-The val2017 split was filtered to images containing at least one annotation of those classes and split 80/20:
+## Датасет
 
-| Split | Images | Annotations |
-|-------|-------:|------------:|
-| train | 240    | 1206        |
-| val   | 60     | 266         |
+10 классов из COCO 2017: `person, bicycle, car, motorcycle, bus, truck, traffic light, stop sign, cat, dog`. Подмножество val2017 разбито 80/20:
 
-## Hyperparameters
-
-| Setting               | Value                  |
-|-----------------------|------------------------|
-| Base model            | facebook/detr-resnet-50 |
-| Epochs                | 8                      |
-| Batch size            | 4                      |
-| Optimizer             | AdamW                  |
-| LR (transformer head) | 1e-4                   |
-| LR (ResNet backbone)  | 1e-5                   |
-| Weight decay          | 1e-4                   |
-| Grad clip (max norm)  | 0.1                    |
-| Image processor       | DetrImageProcessor (default normalization, max longest edge 1333) |
-| Precision             | fp32                   |
-| Hardware              | 1× NVIDIA L4 (24 GB)   |
-
-Classification head and bbox classifier are re-initialized to 10 classes (plus the "no object" class) via `ignore_mismatched_sizes=True`. The remaining DETR weights are loaded from the COCO checkpoint.
-
-## Training Behavior
-
-Per-epoch losses (averaged over batches):
-
-| Epoch | train total | val total |
+| Split | Изображений | Аннотаций |
 |-------|------------:|----------:|
-| 0     | 2.180       | 1.509     |
-| 1     | 1.598       | 1.322     |
-| 2     | 1.505       | 1.313     |
-| 3     | 1.458       | 1.223     |
-| 4     | 1.372       | 1.226     |
-| 5     | 1.338       | **1.170** |
-| 6     | 1.263       | 1.220     |
-| 7     | 1.244       | 1.260     |
+| train | 240         | 1206      |
+| val   | 60          | 266       |
 
-Best validation total loss occurs at epoch 5; checkpoint at that epoch is saved to `checkpoints/best_model.pth`. Loss components (classification, bbox L1, GIoU) are logged per batch and per epoch and can be inspected in TensorBoard (`tensorboard --logdir logs/tb`).
+## Гиперпараметры
 
-A `torch.profiler` trace covering 5 training steps of epoch 0 is exported to `logs/profiler_trace.json` and can be opened in `chrome://tracing/`.
+| Параметр              | Значение                |
+|-----------------------|-------------------------|
+| Базовая модель        | facebook/detr-resnet-50 |
+| Эпох                  | 8                       |
+| Батч                  | 4                       |
+| Оптимизатор           | AdamW                   |
+| LR (голова)           | 1e-4                    |
+| LR (backbone)         | 1e-5                    |
+| Weight decay          | 1e-4                    |
+| Grad clip             | 0.1                     |
+| Точность              | fp32                    |
+| Железо                | 1× NVIDIA L4 (24 ГБ)   |
 
-## Results
+Голова классификации переинициализирована под 10 классов через `ignore_mismatched_sizes=True`.
 
-Computed with `pycocotools` on the val split:
+## Динамика обучения
 
-| Metric                 | Value  |
-|------------------------|-------:|
-| mAP (IoU=0.50:0.95)    | 0.1191 |
-| mAP@0.50               | 0.2049 |
-| mAP@0.75               | 0.1274 |
-| AR@1                   | 0.068  |
-| AR@10                  | 0.172  |
-| AR@100                 | 0.187  |
-| AP small               | 0.073  |
-| AP medium              | 0.175  |
-| AP large               | 0.274  |
+| Эпоха | train loss | val loss  |
+|-------|-----------:|----------:|
+| 0     | 2.180      | 1.509     |
+| 1     | 1.598      | 1.322     |
+| 2     | 1.505      | 1.313     |
+| 3     | 1.458      | 1.223     |
+| 4     | 1.372      | 1.226     |
+| 5     | 1.338      | **1.170** |
+| 6     | 1.263      | 1.220     |
+| 7     | 1.244      | 1.260     |
 
-## Error Analysis
+Лучший чекпойнт — эпоха 5. Компоненты лосса (classification, bbox L1, GIoU) доступны в TensorBoard: `tensorboard --logdir logs/tb`.
 
-Thresholds used by `src/error_analysis.py`:
+## Метрики
 
-| Knob                  | Value |
-|-----------------------|------:|
-| Display score min     | 0.30  |
-| "High confidence"     | 0.50  |
-| IoU match (class err) | 0.30  |
-| IoU window (loc err)  | [0.10, 0.50) |
+| Метрика             | Значение |
+|---------------------|---------:|
+| mAP (0.50:0.95)     | 0.1191   |
+| mAP@0.50            | 0.2049   |
+| mAP@0.75            | 0.1274   |
+| AR@1                | 0.068    |
+| AR@10               | 0.172    |
+| AR@100              | 0.187    |
+| AP small            | 0.073    |
+| AP medium           | 0.175    |
+| AP large            | 0.274    |
 
-Counts on the 60-image val set:
+## Анализ ошибок
 
-| Error type                          | Count |
-|-------------------------------------|------:|
-| Classification (wrong class, IoU≥0.30, score≥0.50) | 4   |
-| Localization  (right class, 0.10 ≤ IoU < 0.50)     | 199 |
+Пороги (`src/error_analysis.py`): score ≥ 0.50, IoU ≥ 0.30 для ошибок классификации, IoU ∈ [0.10, 0.50) для ошибок локализации.
 
-### Findings
+| Тип ошибки          | Кол-во |
+|---------------------|-------:|
+| Классификация       | 4      |
+| Локализация         | 199    |
 
-- **Localization dominates.** With only 8 epochs on 240 images, the model places boxes roughly in the right region of the image and assigns the right class, but the boxes are loose: 199 predictions match a same-class GT with IoU below 0.5. This is consistent with the per-area AP curve (AP_small 0.073 → AP_large 0.274) — small objects in particular suffer from imprecise localization.
-- **Classification is largely correct when confidence is high.** Only 4 high-confidence predictions hit a GT box with the wrong label. The remaining classification mistakes tend to be at lower confidence (below the 0.50 cutoff) and are filtered out before reaching the error buckets.
-- **Most failures are recall, not category confusion.** AR@100 (0.187) being close to mAP (0.119) implies the bottleneck is not "model proposes the wrong class" but "model proposes too few correct boxes" — DETR's 100 object queries are not yet well-specialized after such a short fine-tune.
-- **Confusable categories.** The handful of classification errors are between visually adjacent classes in this subset (e.g., car ↔ truck, person ↔ bicycle when riders overlap).
+**Выводы:**
+- Доминируют ошибки локализации — модель верно определяет класс, но боксы неточные (AP_small 0.073 vs AP_large 0.274).
+- Ошибки классификации редки и возникают между визуально схожими классами (car ↔ truck, person ↔ bicycle).
+- Узкое место — recall, а не путаница классов: AR@100 (0.187) близок к mAP (0.119), DETR не успел специализировать запросы за 8 эпох.
 
-### Suggested next steps
-
-- Train longer (>=50 epochs) and with cosine LR decay; DETR is famously slow to converge.
-- Larger train split (≥ 2k images) or use the full train2017 set for these 10 classes.
-- Consider Deformable-DETR for faster convergence and better small-object AP.
-
-## Reproducing
+## Воспроизведение
 
 ```bash
+python prepare_data.py
 python src/train.py
 python src/eval.py
 python src/error_analysis.py
