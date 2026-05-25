@@ -1,0 +1,32 @@
+[baseline] epoch 0: train_loss=0.9505 train_acc=0.685 val_acc=0.802 val_f1=0.385
+[baseline] epoch 1: train_loss=0.2708 train_acc=0.914 val_acc=0.869 val_f1=0.534
+[baseline] epoch 2: train_loss=0.1461 train_acc=0.951 val_acc=0.877 val_f1=0.495
+[baseline] epoch 3: train_loss=0.1243 train_acc=0.958 val_acc=0.770 val_f1=0.399
+[baseline] epoch 4: train_loss=0.1079 train_acc=0.967 val_acc=0.794 val_f1=0.387
+[baseline] epoch 5: train_loss=0.1212 train_acc=0.962 val_acc=0.810 val_f1=0.422
+[baseline] epoch 6: train_loss=0.0725 train_acc=0.978 val_acc=0.849 val_f1=0.447
+[baseline] epoch 7: train_loss=0.0964 train_acc=0.969 val_acc=0.774 val_f1=0.393
+[baseline] epoch 8: train_loss=0.0787 train_acc=0.975 val_acc=0.817 val_f1=0.343
+[baseline] epoch 9: train_loss=0.1219 train_acc=0.956 val_acc=0.865 val_f1=0.490
+[baseline] epoch 10: train_loss=0.0503 train_acc=0.986 val_acc=0.873 val_f1=0.406
+[baseline] epoch 11: train_loss=0.0292 train_acc=0.991 val_acc=0.905 val_f1=0.581
+[baseline] epoch 12: train_loss=0.0230 train_acc=0.992 val_acc=0.897 val_f1=0.546
+[baseline] epoch 13: train_loss=0.0125 train_acc=0.996 val_acc=0.921 val_f1=0.549
+[baseline] epoch 14: train_loss=0.0284 train_acc=0.990 val_acc=0.909 val_f1=0.542
+               precision    recall  f1-score   support
+
+      bicycle       0.00      0.00      0.00         0
+          bus       0.71      0.83      0.77         6
+          car       0.62      0.83      0.71        12
+          cat       1.00      0.25      0.40         4
+          dog       0.00      0.00      0.00         0
+   motorcycle       0.81      0.76      0.79        17
+       person       0.94      0.96      0.95       206
+    stop_sign       0.00      0.00      0.00         0
+traffic_light       0.67      0.33      0.44         6
+        truck       0.00      0.00      0.00         1
+
+     accuracy                           0.90       252
+    macro avg       0.48      0.40      0.41       252
+ weighted avg       0.90      0.90      0.90       252
+

@@ -1,0 +1,14 @@
+{
+  "side_by_side_saved": 6,
+  "classification_errors_total": 4,
+  "localization_errors_total": 199,
+  "classification_errors_saved": 4,
+  "localization_errors_saved": 6,
+  "thresholds": {
+    "score": 0.3,
+    "high_conf": 0.5,
+    "iou_class_match": 0.3,
+    "iou_localization_low": 0.1,
+    "iou_localization_high": 0.5
+  }
+}

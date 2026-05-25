@@ -1,0 +1,8 @@
+checkpoints/
+data/
+hw2_5/cls_data/
+CLAUDE.md
+__pycache__/
+*.pyc
+.DS_Store
+*.pth

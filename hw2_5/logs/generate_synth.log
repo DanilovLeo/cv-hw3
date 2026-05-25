@@ -1,0 +1,12 @@
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files:   8%|▊         | 1/13 [00:00<00:01,  7.00it/s]Fetching 13 files:  38%|███▊      | 5/13 [00:02<00:03,  2.11it/s]Fetching 13 files:  85%|████████▍ | 11/13 [00:06<00:01,  1.65it/s]Fetching 13 files: 100%|██████████| 13/13 [00:06<00:00,  2.05it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  33%|███▎      | 2/6 [00:06<00:12,  3.03s/it]/usr/local/lib/python3.11/dist-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:11<00:02,  2.11s/it]Loading pipeline components...: 100%|██████████| 6/6 [00:32<00:00,  6.74s/it]Loading pipeline components...: 100%|██████████| 6/6 [00:32<00:00,  5.35s/it]
+cat: generated 50
+traffic_light: generated 50
+bus: generated 50
+{
+  "cat": 50,
+  "traffic_light": 50,
+  "bus": 50
+}

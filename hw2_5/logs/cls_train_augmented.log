@@ -1,0 +1,32 @@
+[augmented] epoch 0: train_loss=0.9653 train_acc=0.679 val_acc=0.560 val_f1=0.327
+[augmented] epoch 1: train_loss=0.2928 train_acc=0.906 val_acc=0.869 val_f1=0.524
+[augmented] epoch 2: train_loss=0.1839 train_acc=0.945 val_acc=0.837 val_f1=0.404
+[augmented] epoch 3: train_loss=0.1290 train_acc=0.963 val_acc=0.909 val_f1=0.559
+[augmented] epoch 4: train_loss=0.0566 train_acc=0.985 val_acc=0.921 val_f1=0.587
+[augmented] epoch 5: train_loss=0.0755 train_acc=0.976 val_acc=0.905 val_f1=0.577
+[augmented] epoch 6: train_loss=0.1184 train_acc=0.963 val_acc=0.877 val_f1=0.527
+[augmented] epoch 7: train_loss=0.0796 train_acc=0.977 val_acc=0.845 val_f1=0.440
+[augmented] epoch 8: train_loss=0.1264 train_acc=0.964 val_acc=0.849 val_f1=0.525
+[augmented] epoch 9: train_loss=0.0509 train_acc=0.985 val_acc=0.861 val_f1=0.518
+[augmented] epoch 10: train_loss=0.0392 train_acc=0.985 val_acc=0.857 val_f1=0.444
+[augmented] epoch 11: train_loss=0.1023 train_acc=0.972 val_acc=0.893 val_f1=0.521
+[augmented] epoch 12: train_loss=0.1209 train_acc=0.962 val_acc=0.841 val_f1=0.416
+[augmented] epoch 13: train_loss=0.0613 train_acc=0.981 val_acc=0.861 val_f1=0.569
+[augmented] epoch 14: train_loss=0.0773 train_acc=0.975 val_acc=0.742 val_f1=0.457
+               precision    recall  f1-score   support
+
+      bicycle       0.00      0.00      0.00         0
+          bus       0.86      1.00      0.92         6
+          car       0.80      0.67      0.73        12
+          cat       1.00      0.75      0.86         4
+          dog       0.00      0.00      0.00         0
+   motorcycle       0.75      0.53      0.62        17
+       person       0.95      0.99      0.97       206
+    stop_sign       0.00      0.00      0.00         0
+traffic_light       0.75      0.50      0.60         6
+        truck       0.00      0.00      0.00         1
+
+     accuracy                           0.92       252
+    macro avg       0.51      0.44      0.47       252
+ weighted avg       0.92      0.92      0.92       252
+
